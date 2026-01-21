@@ -192,9 +192,7 @@ if __name__ == "__main__":
     IVONESCIMAB_CONCENTRATION_NM = 5.0
     PD1_CONCENTRATION_NM = 20.0
 
-    raw_data_location = pathlib.Path(
-        r"C:\Users\josh.bishop\GIT\publications\ivonescimab-kinetics\raw_data"
-    )
+    raw_data_location = pathlib.Path("put_data_folder_here")
 
     data_paths = list(raw_data_location.glob("*.csv"))
 
