@@ -5,7 +5,6 @@ import pathlib
 from typing import Final, NamedTuple, TypeAlias, Sequence
 import numpy as np
 from scipy.optimize import minimize, OptimizeResult
-from scipy.special import erf
 from scipy.integrate import solve_ivp
 
 FloatArray: TypeAlias = np.ndarray[tuple[int], np.dtype[np.float64]]
@@ -24,8 +23,8 @@ def gaussian(
     return res
 
 
-def gaussian_integral(amplitude: float, position: float, sigma: float) -> float:
-    return 0.5 * amplitude * (1 + erf((1000 - position) / (np.sqrt(2) * sigma)))
+def gaussian_integral(amplitude: float, sigma: float) -> float:
+    return amplitude * sigma * np.sqrt(2 * np.pi)
 
 
 def multi_gaussians(
@@ -155,17 +154,14 @@ def determine_complex_abundance_from_csv(
     return (
         gaussian_integral(
             amplitude=fit.ivonescimab_amplitude,
-            position=IVONESICMAB_KDA * fit.mass_multiplier,
             sigma=fit.shared_sigma,
         ),
         gaussian_integral(
             amplitude=fit.ivonescimab_pd1_amplitude,
-            position=(IVONESICMAB_KDA + PD1_KDA) * fit.mass_multiplier,
             sigma=fit.shared_sigma,
         ),
         gaussian_integral(
             amplitude=fit.ivonescimab_2pd1_amplitude,
-            position=(IVONESICMAB_KDA + (2 * PD1_KDA)) * fit.mass_multiplier,
             sigma=fit.shared_sigma,
         ),
     )
